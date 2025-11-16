@@ -381,11 +381,13 @@ class Package {
     writeToFile(filename) {
         let zip = this.buildZip();
 
-        zip.generateAsync({ type: "blob", mimeType: "application/apkg" }).then(function (content) {
-            // see FileSaver.js
-            // saveAs(content, filename);
-            writeFileSync(filename, content);
-        });
+        zip.generateNodeStream({ type: "nodebuffer", mimeType: "application/apkg" }).pipe(createWriteStream(filename));
+
+        // zip.generateAsync({ type: "blob", mimeType: "application/apkg" }).then(function (content) {
+        //     // see FileSaver.js
+        //     // saveAs(content, filename);
+        //     writeFileSync(filename, content);
+        // });
     }
 
     writeToBlob() {
