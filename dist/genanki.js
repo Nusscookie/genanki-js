@@ -400,7 +400,7 @@ class Package {
         zip.generateNodeStream({ type: "nodebuffer", mimeType: "application/apkg" }).pipe(stream);
     }
 
-    writeToUint8Array() {
+    writeToBuffer() {
         let zip = this.buildZip();
         return zip.generateAsync({ type: "nodebuffer", mimeType: "application/apkg" });
     }
