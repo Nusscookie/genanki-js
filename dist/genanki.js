@@ -19,7 +19,7 @@ const { saveAs } = require("file-saver");
 // import { sha256 } from "js-sha256";
 const { sha256 } = require("js-sha256");
 // import JSZip from "jszip";
-const JSZIP = require("jszip");
+const JSZip = require("jszip");
 // import bigInt from "big-integer";
 const bigInt = require("big-integer");
 
@@ -55,7 +55,7 @@ function ankiHash(fields) {
 const MODEL_STD = 0
 const MODEL_CLOZE = 1
 
-export class Model {
+class Model {
     constructor(props) {
         this.props = {
             ...defaultModel,
@@ -87,7 +87,7 @@ export class Model {
     }
 }
 
-export class ClozeModel extends Model {
+class ClozeModel extends Model {
     constructor(props) {
         super({
             type: MODEL_CLOZE,
@@ -111,7 +111,7 @@ export class ClozeModel extends Model {
     }
 }
 
-export const defaultModel = {
+const defaultModel = {
     sortf: 0, // sort field
     did: 1, // deck id
     latexPre: `\\documentclass[12pt]{article}
@@ -143,7 +143,7 @@ export const defaultModel = {
     tags: [],
 }
 
-export const defaultField = {
+const defaultField = {
     name: "",
     ord: null,
     sticky: false,
@@ -153,7 +153,7 @@ export const defaultField = {
     media: [],
 }
 
-export const defaultTemplate = {
+const defaultTemplate = {
     name: "",
     ord: null,
     qfmt: "",
@@ -168,7 +168,7 @@ const NEW_CARDS_DISTRIBUTE = 0
 const NEW_CARDS_LAST = 1
 const NEW_CARDS_FIRST = 2
 
-export const defaultConf = {
+const defaultConf = {
     // review options
     'activeDecks': [1],
     'curDeck': 1,
@@ -193,7 +193,7 @@ const NEW_CARDS_DUE = 1
 
 const STARTING_FACTOR = 2500
 
-export const defaultDeckConf = {
+const defaultDeckConf = {
     'name': "Default",
     'new': {
         'delays': [1, 10],
@@ -232,7 +232,7 @@ export const defaultDeckConf = {
     'usn': 0,
 }
 
-export const defaultDeck = {
+const defaultDeck = {
     newToday: [0, 0], // currentDay, count
     revToday: [0, 0],
     lrnToday: [0, 0],
@@ -247,7 +247,7 @@ export const defaultDeck = {
     extendRev: 50,
 }
 
-export class Deck {
+class Deck {
     constructor(id, name, desc="") {
         this.id = id
         this.name = name
@@ -260,7 +260,7 @@ export class Deck {
     }
 }
 
-export class Note {
+class Note {
     constructor(model, fields, tags = null, guid = null) {
         this.model = model
         this.fields = fields
@@ -320,7 +320,7 @@ export class Note {
     }
 }
 
-export class Package {
+class Package {
     constructor() {
         this.db = null;
         this.decks = []
@@ -461,7 +461,7 @@ export class Package {
 * @license The MIT License
 */
 
-export const APKG_SCHEMA = `
+const APKG_SCHEMA = `
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 
@@ -538,3 +538,21 @@ CREATE INDEX ix_revlog_cid on revlog (cid);
 CREATE INDEX ix_notes_csum on notes (csum);
 COMMIT;
 `;
+
+module.exports = {
+    Model,
+    ClozeModel,
+    Deck,
+    Note,
+    Package,
+    defaultModel,
+    defaultField,
+    defaultTemplate,
+    defaultConf,
+    defaultDeckConf,
+    defaultDeck,
+    APKG_SCHEMA,
+    ankiHash,
+    MODEL_STD,
+    MODEL_CLOZE
+};
