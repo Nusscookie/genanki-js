@@ -343,7 +343,7 @@ class Package {
         this.media.push({ name: name || filename, filename })
     }
 
-    writeToFile(filename) {
+    _buildZip() {
         let db = this.db;
         db.run(APKG_SCHEMA);
 
@@ -370,7 +370,26 @@ class Package {
 
         zip.file('media', JSON.stringify(media_info))
 
-        zip.generateAsync({ type: "blob", mimeType: "application/apkg" }).then(function (content) {
+        return zip;
+    }
+
+    generate() {
+        const zip = this._buildZip();
+        return zip.generateAsync({ type: "blob", mimeType: "application/apkg" });
+    }
+
+    generateArrayBuffer() {
+        const zip = this._buildZip();
+        return zip.generateAsync({ type: "arraybuffer", mimeType: "application/apkg" });
+    }
+
+    generateBase64() {
+        const zip = this._buildZip();
+        return zip.generateAsync({ type: "base64", mimeType: "application/apkg" });
+    }
+
+    writeToFile(filename) {
+        this.generate().then(function (content) {
             // see FileSaver.js
             saveAs(content, filename);
         });
