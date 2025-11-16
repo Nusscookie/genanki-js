@@ -395,6 +395,16 @@ class Package {
         return zip.generateAsync({ type: "blob", mimeType: "application/apkg" });
     }
 
+    writeToStream(stream) {
+        let zip = this.buildZip();
+        zip.generateNodeStream({ type: "nodebuffer", mimeType: "application/apkg" }).pipe(stream);
+    }
+
+    writeToUint8Array() {
+        let zip = this.buildZip();
+        return zip.generateAsync({ type: "nodebuffer", mimeType: "application/apkg" });
+    }
+
 
     write(db) {
         const now = new Date
