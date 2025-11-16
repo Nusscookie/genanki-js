@@ -372,7 +372,9 @@ class Package {
             media_info[i] = m.name
         })
 
-        return zip.file('media', JSON.stringify(media_info))
+        zip.file('media', JSON.stringify(media_info))
+
+        return zip;
     }
 
     writeToFile(filename) {
