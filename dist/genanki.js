@@ -378,11 +378,7 @@ class Package {
     writeToFile(filename) {
         let zip = this.buildZip();
 
-        return zip;
-    }
-
-    writeToFile(filename) {
-        this.generate().then(function (content) {
+        zip.generateAsync({ type: "blob", mimeType: "application/apkg" }).then(function (content) {
             // see FileSaver.js
             saveAs(content, filename);
         });
