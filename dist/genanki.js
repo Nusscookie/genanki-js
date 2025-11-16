@@ -22,6 +22,7 @@ const { sha256 } = require("js-sha256");
 const JSZip = require("jszip");
 // import bigInt from "big-integer";
 const bigInt = require("big-integer");
+const { writeFileSync } = require("fs");
 
 const BASE91_TABLE = [
   'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
@@ -382,7 +383,8 @@ class Package {
 
         zip.generateAsync({ type: "blob", mimeType: "application/apkg" }).then(function (content) {
             // see FileSaver.js
-            saveAs(content, filename);
+            // saveAs(content, filename);
+            writeFileSync(filename, content);
         });
     }
 
