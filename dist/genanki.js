@@ -356,9 +356,9 @@ class Package {
         let zip = new JSZip();
 
         const data = db.export();
-        // db.export() gibt bereits ein Uint8Array zurück
-        // JSZip akzeptiert Uint8Array direkt
-        zip.file("collection.anki2", data);
+        const buffer = new Uint8Array(data).buffer;
+        
+        zip.file("collection.anki2", buffer);
 
         const media_info = {}
 
