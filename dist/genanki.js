@@ -344,6 +344,9 @@ class Package {
     }
 
     _buildZip() {
+        if (!this.db) {
+            throw new Error("SQL.js database not initialized. Call setSqlJs() first.");
+        }
         let db = this.db;
         db.run(APKG_SCHEMA);
 
@@ -352,9 +355,9 @@ class Package {
         let zip = new JSZip();
 
         const data = db.export();
-        const buffer = new Uint8Array(data).buffer;
-        
-        zip.file("collection.anki2", buffer);
+        // db.export() gibt bereits ein Uint8Array zurück
+        // JSZip akzeptiert Uint8Array direkt
+        zip.file("collection.anki2", data);
 
         const media_info = {}
 
@@ -375,17 +378,32 @@ class Package {
 
     generate() {
         const zip = this._buildZip();
-        return zip.generateAsync({ type: "blob", mimeType: "application/apkg" });
+        return zip.generateAsync({ 
+            type: "blob", 
+            mimeType: "application/apkg",
+            compression: "DEFLATE",
+            compressionOptions: { level: 6 }
+        });
     }
 
     generateArrayBuffer() {
         const zip = this._buildZip();
-        return zip.generateAsync({ type: "arraybuffer", mimeType: "application/apkg" });
+        return zip.generateAsync({ 
+            type: "arraybuffer", 
+            mimeType: "application/apkg",
+            compression: "DEFLATE",
+            compressionOptions: { level: 6 }
+        });
     }
 
     generateBase64() {
         const zip = this._buildZip();
-        return zip.generateAsync({ type: "base64", mimeType: "application/apkg" });
+        return zip.generateAsync({ 
+            type: "base64", 
+            mimeType: "application/apkg",
+            compression: "DEFLATE",
+            compressionOptions: { level: 6 }
+        });
     }
 
     writeToFile(filename) {
