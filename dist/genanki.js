@@ -14,10 +14,14 @@
  * @license AGPL-3.0 License
  */
 
-import { saveAs } from "file-saver";
-import { sha256 } from "js-sha256";
-import JSZip from "jszip";
-import bigInt from "big-integer";
+// import { saveAs } from "file-saver";
+const { saveAs } = require("file-saver");
+// import { sha256 } from "js-sha256";
+const { sha256 } = require("js-sha256");
+// import JSZip from "jszip";
+const JSZIP = require("jszip");
+// import bigInt from "big-integer";
+const bigInt = require("big-integer");
 
 const BASE91_TABLE = [
   'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
