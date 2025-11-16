@@ -343,10 +343,11 @@ class Package {
         this.media.push({ name: name || filename, filename })
     }
 
-    _buildZip() {
+    buildZip() {
         if (!this.db) {
             throw new Error("SQL.js database not initialized. Call setSqlJs() first.");
         }
+
         let db = this.db;
         db.run(APKG_SCHEMA);
 
@@ -371,39 +372,13 @@ class Package {
             media_info[i] = m.name
         })
 
-        zip.file('media', JSON.stringify(media_info))
+        return zip.file('media', JSON.stringify(media_info))
+    }
+
+    writeToFile(filename) {
+        let zip = this.buildZip();
 
         return zip;
-    }
-
-    generate() {
-        const zip = this._buildZip();
-        return zip.generateAsync({ 
-            type: "blob", 
-            mimeType: "application/apkg",
-            compression: "DEFLATE",
-            compressionOptions: { level: 6 }
-        });
-    }
-
-    generateArrayBuffer() {
-        const zip = this._buildZip();
-        return zip.generateAsync({ 
-            type: "arraybuffer", 
-            mimeType: "application/apkg",
-            compression: "DEFLATE",
-            compressionOptions: { level: 6 }
-        });
-    }
-
-    generateBase64() {
-        const zip = this._buildZip();
-        return zip.generateAsync({ 
-            type: "base64", 
-            mimeType: "application/apkg",
-            compression: "DEFLATE",
-            compressionOptions: { level: 6 }
-        });
     }
 
     writeToFile(filename) {
@@ -411,6 +386,11 @@ class Package {
             // see FileSaver.js
             saveAs(content, filename);
         });
+    }
+
+    writeToBlob() {
+        let zip = this.buildZip();
+        return zip.generateAsync({ type: "blob", mimeType: "application/apkg" });
     }
 
 
